@@ -10,7 +10,49 @@ public class MarketSim {
 		boolean test = true;
 
 		while (test) {
+			int self = 0;
+			int full = 0;
+			boolean laneNum = false;
+			while (!laneNum) {
 
+				boolean integer = false;
+
+				while (!integer) {
+					// ask for number of full-service lanes
+					System.out.println("How many full-service lanes do you want to test for?");
+
+					try {
+						full = s.nextInt();
+						integer = true;
+					} catch (InputMismatchException ime) {
+						System.err.println("You must type a whole number. Please try again.");
+						s.nextLine();
+					}
+
+				}
+
+				integer = false;
+				while (!integer) {
+					// ask for number of self-service lanes
+					System.out.println("How many self-service lanes do you want to test for?");
+
+					try {
+						self = s.nextInt();
+						integer = true;
+					} catch (InputMismatchException ime) {
+						System.err.println("You must type a whole number. Please try again.");
+						s.nextLine();
+					}
+
+				}
+
+				// make sure customer is testing one of each line
+				if (full <= 0 || self <= 0) {
+					System.err.println("You must test at least 1 of each lane. Please try again.");
+				} else {
+					laneNum = true;
+				}
+			}
 			// Ask for how many customers to test for, make sure its above 0
 			System.out.println("How many customers do you want to test for?");
 			boolean validCustAmt = false;
@@ -47,22 +89,24 @@ public class MarketSim {
 			// Make an arraylist of customers
 			ArrayList<Customer> customerList = new ArrayList<>();
 
-			// Create the queue lines A,B, and C
+			// Create the queue lines
 			// Add them to an arraylist
-			// Create a new MultipleLanes object
-			CheckoutQueue<Customer> lineA = new CheckoutQueue<>("A");
-			CheckoutQueue<Customer> lineB = new CheckoutQueue<>("B");
-			CheckoutQueue<Customer> lineC = new CheckoutQueue<>("C");
+			char nextLane = 'A';
 			ArrayList<CheckoutQueue<Customer>> theLines = new ArrayList<>();
-			theLines.add(lineA);
-			theLines.add(lineB);
-			theLines.add(lineC);
+			for (int i = 0; i < full; i++) {
+				CheckoutQueue<Customer> line = new CheckoutQueue<>(nextLane);
+				theLines.add(line);
+				nextLane++;
+			}
+
+			// Create a new MultipleLanes object
+
 			MultipleLanes lanes = new MultipleLanes(theLines);
 
 			// One checkout lane services the self checkouts
 			// Create a new SelfServiceQueues object
-			CheckoutQueue<Customer> lineD = new CheckoutQueue<>("Self Checkouts");
-			SelfCheckouts selfServeLanes = new SelfCheckouts(lineD, 2);
+			CheckoutQueue<Customer> lineD = new CheckoutQueue<>('s');
+			SelfCheckouts selfServeLanes = new SelfCheckouts(lineD, self, nextLane);
 
 			// Things to track during the clock run
 			boolean keepRunning = true;

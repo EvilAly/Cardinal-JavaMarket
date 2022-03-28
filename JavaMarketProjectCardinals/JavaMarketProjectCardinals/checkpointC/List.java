@@ -35,18 +35,18 @@ class ListNode<E extends Comparable<E>> {
 public class List<E extends Comparable<E>> {
 	private ListNode<E> firstNode;
 	private ListNode<E> lastNode;
-	private String name; // string like "list" used in printing
+	private char name; // string like "list" used in printing
 	private boolean justRemoved;
 
-	// constructor creates empty List with "list" as the name
+	// constructor creates empty List with 'l' as the name
 	public List() {
-		this("list");
+		this('l');
 		justRemoved = false;
 	}
 
 	// constructor creates an empty List with a name
-	public List(String listName) {
-		name = listName;
+	public List(char string) {
+		name = string;
 		firstNode = lastNode = null;
 		justRemoved = false;
 	}
@@ -207,7 +207,7 @@ public class List<E extends Comparable<E>> {
 	 * 
 	 * @return The name of the list.
 	 */
-	public String getName() {
+	public char getName() {
 		return name;
 	}
 
