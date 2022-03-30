@@ -23,34 +23,29 @@ public class MarketSim {
 
 					try {
 						full = s.nextInt();
-						integer = true;
 					} catch (InputMismatchException ime) {
 						System.err.println("You must type a whole number. Please try again.");
 						s.nextLine();
 					}
 
-				}
-
-				integer = false;
-				while (!integer) {
 					// ask for number of self-service lanes
 					System.out.println("How many self-service lanes do you want to test for?");
 
 					try {
 						self = s.nextInt();
-						integer = true;
+
 					} catch (InputMismatchException ime) {
 						System.err.println("You must type a whole number. Please try again.");
 						s.nextLine();
 					}
 
-				}
-
-				// make sure customer is testing one of each line
-				if (full <= 0 || self <= 0) {
-					System.err.println("You must test at least 1 of each lane. Please try again.");
-				} else {
-					laneNum = true;
+					// make sure customer is testing one of each line
+					if (full <= 0 || self <= 0) {
+						System.err.println("You must test at least 1 of each lane. Please try again.");
+					} else {
+						laneNum = true;
+						integer = true;
+					}
 				}
 			}
 			// Ask for how many customers to test for, make sure its above 0
