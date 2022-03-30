@@ -10,10 +10,10 @@ public class CheckoutQueue<E extends Comparable<E>> {
 
 	// constructors
 	public CheckoutQueue() {
-		queueList = new List<E>("queue");
+		queueList = new List<E>();
 	}
 
-	public CheckoutQueue(String n) {
+	public CheckoutQueue(char n) {
 		queueList = new List<E>(n);
 	}
 
@@ -71,7 +71,7 @@ public class CheckoutQueue<E extends Comparable<E>> {
 	 * 
 	 * @return The name of the list.
 	 */
-	public String getName() {
+	public char getName() {
 		return queueList.getName();
 	}
 

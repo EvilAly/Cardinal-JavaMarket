@@ -7,7 +7,7 @@ public class Customer implements Comparable<Customer> {
 	private int serviceStart;
 	private int finishTime;
 	private int waitTime;
-	private String lane; //May not need this, figure this out
+	private char lane; //May not need this, figure this out
 	private char serviceType;
 	private static int idNum = 1;
 	private int id; 
@@ -110,12 +110,12 @@ public class Customer implements Comparable<Customer> {
 		this.finishTime = finishTime;
 	}
 
-	public String getLane() {
+	public char getLane() {
 		return lane;
 	}
 
-	public void setLane(String lane) {
-		this.lane = lane;
+	public void setLane(char laneName) {
+		this.lane = laneName;
 	}
 
 	public char getServiceType() {

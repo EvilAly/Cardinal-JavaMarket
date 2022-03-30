@@ -14,7 +14,7 @@ public class SelfCheckouts {
 	private Customer[] checkouts;
 	// array that stores the removed customers
 	private Customer[] remCustomer;
-	private static char idChar = 'D';
+	private static char idChar;
 	private int totalWait;
 	// tracks amount of time that there is a checkout not in use
 	private int notInUse;
@@ -30,10 +30,11 @@ public class SelfCheckouts {
 	}
 
 	// Full constructor
-	public SelfCheckouts(CheckoutQueue<Customer> lane, int num) {
+	public SelfCheckouts(CheckoutQueue<Customer> lane, int num, char laneID) {
 		selfServiceLane = lane;
 		numCheckouts = num;
 		amtCusts = 0;
+		idChar = laneID;
 
 		names = new char[numCheckouts];
 		// Set the names in the array, for each iteration, increment queue character
@@ -81,7 +82,7 @@ public class SelfCheckouts {
 	// added to, and the time of this
 	public void setCustFields(Customer c, int indexOfCheckout, int time) {
 		// Set their lane name, which is corresponding in names array (indexOfCheckout)
-		String laneName = Character.toString(names[indexOfCheckout]);
+		char laneName = names[indexOfCheckout];
 		// Set their checkout lane
 		c.setLane(laneName);
 		// Set their finish time
