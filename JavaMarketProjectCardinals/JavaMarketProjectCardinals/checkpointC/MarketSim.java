@@ -23,34 +23,29 @@ public class MarketSim {
 
 					try {
 						full = s.nextInt();
-						integer = true;
 					} catch (InputMismatchException ime) {
 						System.err.println("You must type a whole number. Please try again.");
 						s.nextLine();
 					}
 
-				}
-
-				integer = false;
-				while (!integer) {
 					// ask for number of self-service lanes
 					System.out.println("How many self-service lanes do you want to test for?");
 
 					try {
 						self = s.nextInt();
-						integer = true;
+
 					} catch (InputMismatchException ime) {
 						System.err.println("You must type a whole number. Please try again.");
 						s.nextLine();
 					}
 
-				}
-
-				// make sure customer is testing one of each line
-				if (full <= 0 || self <= 0) {
-					System.err.println("You must test at least 1 of each lane. Please try again.");
-				} else {
-					laneNum = true;
+					// make sure customer is testing one of each line
+					if (full <= 0 || self <= 0) {
+						System.err.println("You must test at least 1 of each lane. Please try again.");
+					} else {
+						laneNum = true;
+						integer = true;
+					}
 				}
 			}
 			// Ask for how many customers to test for, make sure its above 0
@@ -398,6 +393,13 @@ public class MarketSim {
 		// Print satisfaction stats
 		System.out.println("The number of customers who were satisfied (<5 wait time) is " + satisfied + ".");
 		System.out.println("The number of customers who were not satisfied (>=5 wait time) is " + notSatisfied + ".");
+
+		// if number of unsatisfied customers is greater than 20% of customers
+		// open one lane for each "20%" that were unsatisfied
+		if (notSatisfied > (0.2 * custs.size())) {
+			int addLane = (int) (notSatisfied / (0.2 * custs.size()));
+			System.out.println("\n ----- Given the number of unsatisfied customers, I would recommend opening " + addLane + " more lanes.");
+		}
 	}
 
 }
