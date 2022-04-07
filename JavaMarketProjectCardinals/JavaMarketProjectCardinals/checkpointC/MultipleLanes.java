@@ -247,21 +247,34 @@ public class MultipleLanes {
 
 	// This method displays stats about waiting time, lanes not in use, and customer
 	// satisfaction
-	public void displayStats() {
+	public void displayStats(int time, int currentNumLanes) {
 		DecimalFormat df = new DecimalFormat("#.##");
 
 		System.out.println("Full-Service stats:");
 		System.out.println("The average wait time was " + df.format(calculateAvgWaitTime()) + " minutes.");
 		System.out.println("The time that full-service lanes were not in use was " + notInUse + " minutes.");
 		
-		if (calculateAvgWaitTime() <= 10) {
-			int avgNotInUse = (notInUse/(checkoutLanes.size()+1));
-			if (avgNotInUse > 15) {
-				int closeLanes = (avgNotInUse/10);
-				System.out.println("\n ----- Given the time the full-service lanes were not in use, I would recommend closing " 
-						+ closeLanes + " full service lanes.");
-			}
+		
+		//NEW CODE
+		int avgNotInUse = (notInUse/checkoutLanes.size());
+		int predictAvgNotInUse = (time/checkoutLanes.size());
+		int tenPercentAbove = (int) (predictAvgNotInUse+(predictAvgNotInUse*0.10));
+
+		if (avgNotInUse > tenPercentAbove && calculateAvgWaitTime() <= 10) {
+			int closeLanes = (int)(currentNumLanes - (notInUse / predictAvgNotInUse*.10));
+			System.out.println("\n ----- Given the time the full-service lanes were not in use, I would recommend closing " 
+					+ closeLanes + " full service lanes.");
 		}
+		
+		
+//		if (calculateAvgWaitTime() <= 10) {
+//			int avgNotInUse = (notInUse/(checkoutLanes.size()+1));
+//			if (avgNotInUse > 15) {
+//				int closeLanes = (avgNotInUse/10);
+//				System.out.println("\n ----- Given the time the full-service lanes were not in use, I would recommend closing " 
+//						+ closeLanes + " full service lanes.");
+//			}
+//		}
 
 	}
 

@@ -12,41 +12,49 @@ public class MarketSim {
 		while (test) {
 			int self = 0;
 			int full = 0;
+			boolean selfint = false;
+			boolean fullint = false;
 			boolean laneNum = false;
 			while (!laneNum) {
 
-				boolean integer = false;
+				// boolean integer = false;
 
-				while (!integer) {
+				while (!fullint) {
 					// ask for number of full-service lanes
 					System.out.println("How many full-service lanes do you want to test for?");
 
 					try {
 						full = s.nextInt();
+						fullint = true;
 					} catch (InputMismatchException ime) {
 						System.err.println("You must type a whole number. Please try again.");
 						s.nextLine();
 					}
+				}
 
+				while (!selfint) {
 					// ask for number of self-service lanes
 					System.out.println("How many self-service lanes do you want to test for?");
 
 					try {
 						self = s.nextInt();
-
+						selfint = true;
 					} catch (InputMismatchException ime) {
 						System.err.println("You must type a whole number. Please try again.");
 						s.nextLine();
 					}
-
-					// make sure customer is testing one of each line
-					if (full <= 0 || self <= 0) {
-						System.err.println("You must test at least 1 of each lane. Please try again.");
-					} else {
-						laneNum = true;
-						integer = true;
-					}
 				}
+
+				// make sure customer is testing one of each line
+				if (full <= 0 || self <= 0) {
+					System.err.println("You must test at least 1 of each lane. Please try again.");
+					selfint = false;
+					fullint = false;
+				} else {
+					laneNum = true;
+					// integer = true;
+				}
+
 			}
 			// Ask for how many customers to test for, make sure its above 0
 			System.out.println("How many customers do you want to test for?");
@@ -214,7 +222,7 @@ public class MarketSim {
 
 			// Output stats
 			System.out.println();
-			lanes.displayStats();
+			lanes.displayStats(clockTime,full);
 			System.out.println();
 			selfServeLanes.displayStats();
 			System.out.println();
@@ -353,28 +361,33 @@ public class MarketSim {
 			// Make a customer creator object which will make an array of arrival times and
 			// service times
 			// Based on user ranges
-			try {
-				cc = new CustomerCreator(minArrive, maxArrive, minServ, maxServ, amtCust);
-				validArgs = true;
-			} catch (IllegalArgumentException iae) {
-				System.err.println("The maximum cannot be less than the minimum. Please try again.");
-				s.nextLine();
-			}
-
-			System.out.println(
-					"How much slower is the self service lane? Please a percentage as a whole number (i.e For 20%, please enter 20.");
-			boolean theInteger = false;
-			while (!theInteger) {
+			if (maxServ < minServ) {
 				try {
-					int selfPacePenalty = s.nextInt();
-					cc.setSelfServPenalty(selfPacePenalty);
-					theInteger = true;
-				} catch (InputMismatchException ime) {
-					System.err.println("You must type a whole number. Please try again.");
+					cc = new CustomerCreator(minArrive, maxArrive, minServ, maxServ, amtCust);
+				} catch (IllegalArgumentException iae) {
+					System.err.println("The maximum cannot be less than the minimum. Please try again.");
 					s.nextLine();
 				}
+			} else {
+				cc = new CustomerCreator(minArrive, maxArrive, minServ, maxServ, amtCust);
+				validArgs = true;
 			}
 		}
+
+		System.out.println(
+				"How much slower is the self service lane? Please a percentage as a whole number (i.e For 20%, please enter 20.");
+		boolean theInteger = false;
+		while (!theInteger) {
+			try {
+				int selfPacePenalty = s.nextInt();
+				cc.setSelfServPenalty(selfPacePenalty);
+				theInteger = true;
+			} catch (InputMismatchException ime) {
+				System.err.println("You must type a whole number. Please try again.");
+				s.nextLine();
+			}
+		}
+
 		return cc;
 	}
 
@@ -398,7 +411,8 @@ public class MarketSim {
 		// open one lane for each "20%" that were unsatisfied
 		if (notSatisfied > (0.2 * custs.size())) {
 			int addLane = (int) (notSatisfied / (0.2 * custs.size()));
-			System.out.println("\n ----- Given the number of unsatisfied customers, I would recommend opening " + addLane + " more lanes.");
+			System.out.println("\n ----- Given the number of unsatisfied customers, I would recommend opening "
+					+ addLane + " more lanes.");
 		}
 	}
 
