@@ -253,6 +253,15 @@ public class MultipleLanes {
 		System.out.println("Full-Service stats:");
 		System.out.println("The average wait time was " + df.format(calculateAvgWaitTime()) + " minutes.");
 		System.out.println("The time that full-service lanes were not in use was " + notInUse + " minutes.");
+		
+		if (calculateAvgWaitTime() <= 10) {
+			int avgNotInUse = (notInUse/(checkoutLanes.size()+1));
+			if (avgNotInUse > 15) {
+				int closeLanes = (avgNotInUse/10);
+				System.out.println("\n ----- Given the time the full-service lanes were not in use, I would recommend closing " 
+						+ closeLanes + " full service lanes.");
+			}
+		}
 
 	}
 
