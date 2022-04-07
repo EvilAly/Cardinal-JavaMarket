@@ -258,12 +258,16 @@ public class MultipleLanes {
 		//NEW CODE
 		int avgNotInUse = (notInUse/checkoutLanes.size());
 		int predictAvgNotInUse = (time/checkoutLanes.size());
-		int tenPercentAbove = (int) (predictAvgNotInUse+(predictAvgNotInUse*0.1));
 
-		if ((avgNotInUse > tenPercentAbove) && (calculateAvgWaitTime() <= 10)) {
+		if ((avgNotInUse > (int)(predictAvgNotInUse*.65)) && (calculateAvgWaitTime() <= 10)) {
 			int closeLanes = (int)(currentNumLanes - (notInUse / predictAvgNotInUse*.10));
+			
+			if (closeLanes < currentNumLanes)
 			System.out.println("\n ----- Given the time the full-service lanes were not in use, I would recommend closing " 
 					+ closeLanes + " full service lanes.");
+			else
+				System.out.println("\n ----- Given the time the full-service lanes were not in use, I would recommend closing " 
+						+ (currentNumLanes - 1) + " full service lanes.");
 		}
 		
 		
