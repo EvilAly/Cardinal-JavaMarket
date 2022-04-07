@@ -260,7 +260,7 @@ public class MultipleLanes {
 		int predictAvgNotInUse = (time/checkoutLanes.size());
 		int tenPercentAbove = (int) (predictAvgNotInUse+(predictAvgNotInUse*0.10));
 
-		if (avgNotInUse > tenPercentAbove && calculateAvgWaitTime() <= 10) {
+		if ((avgNotInUse > tenPercentAbove) && (calculateAvgWaitTime() <= 10)) {
 			int closeLanes = (int)(currentNumLanes - (notInUse / predictAvgNotInUse*.10));
 			System.out.println("\n ----- Given the time the full-service lanes were not in use, I would recommend closing " 
 					+ closeLanes + " full service lanes.");
