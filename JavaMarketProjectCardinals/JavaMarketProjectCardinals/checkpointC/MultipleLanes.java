@@ -258,7 +258,7 @@ public class MultipleLanes {
 		//NEW CODE
 		int avgNotInUse = (notInUse/checkoutLanes.size());
 		int predictAvgNotInUse = (time/checkoutLanes.size());
-		int tenPercentAbove = (int) (predictAvgNotInUse+(predictAvgNotInUse*0.10));
+		int tenPercentAbove = (int) (predictAvgNotInUse+(predictAvgNotInUse*0.1));
 
 		if ((avgNotInUse > tenPercentAbove) && (calculateAvgWaitTime() <= 10)) {
 			int closeLanes = (int)(currentNumLanes - (notInUse / predictAvgNotInUse*.10));
