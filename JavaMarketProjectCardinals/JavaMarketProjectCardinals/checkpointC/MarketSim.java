@@ -222,11 +222,11 @@ public class MarketSim {
 
 			// Output stats
 			System.out.println();
-			lanes.displayStats(clockTime,full);
+			int closeFullLanes = lanes.displayStats(clockTime,full);
 			System.out.println();
-			selfServeLanes.displayStats();
+			int closeSelfLanes = selfServeLanes.displayStats(clockTime);
 			System.out.println();
-			customerSatisfaction(customerList);
+			customerSatisfaction(customerList, closeFullLanes, closeSelfLanes );
 
 			// go again?
 			System.out.println("\nWould you like to simulate a different scenario? (yes or no)");
@@ -391,7 +391,7 @@ public class MarketSim {
 		return cc;
 	}
 
-	public static void customerSatisfaction(ArrayList<Customer> custs) {
+	public static void customerSatisfaction(ArrayList<Customer> custs, int cFull, int cSelf) {
 		// Track number of satisfied (<5 min) and nonsatisfied customers (>= 5 mins)
 		int satisfied = 0;
 		int notSatisfied = 0;
@@ -407,12 +407,24 @@ public class MarketSim {
 		System.out.println("The number of customers who were satisfied (<5 wait time) is " + satisfied + ".");
 		System.out.println("The number of customers who were not satisfied (>=5 wait time) is " + notSatisfied + ".");
 
-		// if number of unsatisfied customers is greater than 20% of customers
-		// open one lane for each "20%" that were unsatisfied
-		if (notSatisfied > (0.2 * custs.size())) {
+		// if number of unsatisfied customers is greater than 20% of customers & lanes were not recommended to close
+		// open one lane for each "20%" that were unsatisfied, otherwise gives recommendation of lanes to close
+		if ((notSatisfied > (0.2 * custs.size())) && (cFull < 1)) {
 			int addLane = (int) (notSatisfied / (0.2 * custs.size()));
 			System.out.println("\n ----- Given the number of unsatisfied customers, I would recommend opening "
-					+ addLane + " more lanes.");
+					+ addLane + " more Full Service lanes.");
+		} else if (cFull > 0){
+			System.out.println("\n ----- Given the length of time the Full Service lanes were not in use, I would recommend closing "
+					+ cFull + " Full Service lanes.");
+		}
+		
+		if ((notSatisfied > (0.2 * custs.size())) && (cSelf < 1)) {
+			int addLane = (int) (notSatisfied / (0.1 * custs.size()));
+			System.out.println("\n ----- Given the number of unsatisfied customers, I would recommend opening "
+					+ addLane + " more Self Service lanes.");
+		} else if (cSelf > 0) {
+			System.out.println("\n ----- Given the length of time the Self Service lanes were not in use, I would recommend closing "
+					+ cSelf + " Self Service lanes.");
 		}
 	}
 

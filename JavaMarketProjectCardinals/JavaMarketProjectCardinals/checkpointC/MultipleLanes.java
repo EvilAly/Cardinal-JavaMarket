@@ -247,38 +247,31 @@ public class MultipleLanes {
 
 	// This method displays stats about waiting time, lanes not in use, and customer
 	// satisfaction
-	public void displayStats(int time, int currentNumLanes) {
+	// It also recommends to close lanes if lanes are empty more than 65% of the of
+	// the time and returns
+	// a boolean on if recommending closings.
+	public int displayStats(int time, int currentNumLanes) {
 		DecimalFormat df = new DecimalFormat("#.##");
 
 		System.out.println("Full-Service stats:");
 		System.out.println("The average wait time was " + df.format(calculateAvgWaitTime()) + " minutes.");
 		System.out.println("The time that full-service lanes were not in use was " + notInUse + " minutes.");
-		
-		
-		//NEW CODE
-		int avgNotInUse = (notInUse/checkoutLanes.size());
-		int predictAvgNotInUse = (time/checkoutLanes.size());
 
-		if ((avgNotInUse > (int)(predictAvgNotInUse*.65)) && (calculateAvgWaitTime() <= 10)) {
-			int closeLanes = (int)(currentNumLanes - (notInUse / predictAvgNotInUse*.10));
-			
+		// NEW CODE
+		int avgNotInUse = (notInUse / checkoutLanes.size());
+		int predictAvgNotInUse = (time / checkoutLanes.size());
+
+		if ((avgNotInUse > (int) (predictAvgNotInUse * .65)) && (calculateAvgWaitTime() <= 10)) {
+			int closeLanes = (int) (currentNumLanes - (notInUse / predictAvgNotInUse * .10));
+
 			if (closeLanes < currentNumLanes)
-			System.out.println("\n ----- Given the time the full-service lanes were not in use, I would recommend closing " 
-					+ closeLanes + " full service lanes.");
+				return closeLanes;
 			else
-				System.out.println("\n ----- Given the time the full-service lanes were not in use, I would recommend closing " 
-						+ (currentNumLanes - 1) + " full service lanes.");
+				return currentNumLanes - 1;
+
 		}
 		
-		
-//		if (calculateAvgWaitTime() <= 10) {
-//			int avgNotInUse = (notInUse/(checkoutLanes.size()+1));
-//			if (avgNotInUse > 15) {
-//				int closeLanes = (avgNotInUse/10);
-//				System.out.println("\n ----- Given the time the full-service lanes were not in use, I would recommend closing " 
-//						+ closeLanes + " full service lanes.");
-//			}
-//		}
+		return 0;
 
 	}
 

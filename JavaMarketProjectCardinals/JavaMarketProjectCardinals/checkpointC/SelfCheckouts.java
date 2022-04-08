@@ -180,12 +180,28 @@ public class SelfCheckouts {
 	}
 
 	// This method displays stats about waiting time and lanes not in use
-	public void displayStats() {
+	public int displayStats(int time) {
 		DecimalFormat df = new DecimalFormat("#.##");
 
 		System.out.println("Self-Service stats:");
 		System.out.println("The average wait time was " + df.format(calculateAvgWaitTime()) + " minutes.");
 		System.out.println("The time that self checkout were not in use was " + notInUse + " minutes.");
+		
+		int avgNotInUse = (notInUse / numCheckouts);
+		int predictAvgNotInUse = (time / numCheckouts);
+
+		if ((avgNotInUse > (int) (predictAvgNotInUse * .65)) && (calculateAvgWaitTime() <= 10)) {
+			int closeLanes = (int) (numCheckouts - (notInUse / predictAvgNotInUse * .10));
+
+			if (closeLanes < numCheckouts)
+				return closeLanes;
+			else
+				return numCheckouts - 1;
+
+		}
+		
+		return 0;
+		
 
 	}
 
