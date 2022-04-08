@@ -17,8 +17,6 @@ public class MarketSim {
 			boolean laneNum = false;
 			while (!laneNum) {
 
-				// boolean integer = false;
-
 				while (!fullint) {
 					// ask for number of full-service lanes
 					System.out.println("How many full-service lanes do you want to test for?");
