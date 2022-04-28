@@ -64,8 +64,8 @@ public class SelfCheckouts {
 	// create SQL Statement
 	public String toSQLString() {
 		String s;
-		s = "INSERT INTO selfcheckout (runID, numOfLanes, notInUseMins, totalWaitMins, custCount) VALUES " + "(" + runID
-				+ ", " + numCheckouts + ", " + notInUse + ", " + totalWait + ", " + amtCusts + ")";
+		s = "INSERT INTO selfcheckout (runID, numOfLanes, notInUseMins, totalWaitMins, custCount, suggestion) VALUES "
+				+ "(" + runID + ", " + numCheckouts + ", " + notInUse + ", " + totalWait + ", " + amtCusts;
 		return s;
 	}
 
