@@ -19,7 +19,8 @@ CREATE TABLE fullcheckout (
   numOfLanes smallint(6) NOT NULL,
   notInUseMins int(11) NOT NULL,
   totalWaitMins int(11) NOT NULL,
-  custCount int(11) NOT NULL
+  custCount int(11) NOT NULL,
+  suggestion int(11) NOT NULL
 );
 
 DROP TABLE IF EXISTS selfcheckout;
@@ -28,6 +29,7 @@ CREATE TABLE selfcheckout (
   numOfLanes smallint(6) NOT NULL,
   notInUseMins int(11) NOT NULL,
   totalWaitMins int(11) NOT NULL,
-  custCount int(11) NOT NULL
+  custCount int(11) NOT NULL,
+  suggestion int(11) NOT NULL
 );
 
