@@ -80,10 +80,20 @@ public class MarketDB {
 
 	}
 
-	public static void saveToDB(MultipleLanes lanes, SelfCheckouts selfServeLanes, ArrayList<Customer> customerList) {
+	public static void saveToDB(MultipleLanes lanes, SelfCheckouts selfServeLanes, ArrayList<Customer> customerList, int closeFullLanes, int closeSelfLanes, Integer[] open) {
 		checkConnect();
 		String full = lanes.toSQLString();
+		if (closeFullLanes > open[0]) {
+			full = full + ", -" + closeFullLanes + ")";
+		} else
+			full = full + ", +" + open[0] + ")";
+		
 		String self = selfServeLanes.toSQLString();
+		if (closeSelfLanes > open[1]) {
+			self = self + ", -" + closeSelfLanes + ")";
+		} else
+			self = self + ", +" + open[1] + ")";
+		
 		try {
 			stmt = conn.createStatement();
 			stmt.executeUpdate(full);
