@@ -237,7 +237,7 @@ public class MarketSim {
 			System.out.println();
 			int closeSelfLanes = selfServeLanes.displayStats(clockTime);
 			System.out.println();
-			customerSatisfaction(customerList, closeFullLanes, closeSelfLanes);
+			Integer[] open = customerSatisfaction(customerList, closeFullLanes, closeSelfLanes);
 
 			// ask if user would like to save the data to the database
 			System.out.println("\nWould you like to save this run to the database? (yes or no)");
@@ -254,7 +254,7 @@ public class MarketSim {
 					valid = true;
 					if (save.equals("yes")) {
 						// run commands to save data to SQL DB
-						MarketDB.saveToDB(lanes, selfServeLanes, customerList);
+						MarketDB.saveToDB(lanes, selfServeLanes, customerList, closeFullLanes, closeSelfLanes, open);
 					}
 
 				}
@@ -278,7 +278,7 @@ public class MarketSim {
 
 					} else {
 						Customer.resetID();
-						SelfCheckouts.setIdChar('D');
+
 					}
 				}
 			}
@@ -422,7 +422,7 @@ public class MarketSim {
 		return cc;
 	}
 
-	public static void customerSatisfaction(ArrayList<Customer> custs, int cFull, int cSelf) {
+	public static Integer[] customerSatisfaction(ArrayList<Customer> custs, int cFull, int cSelf) {
 		// Track number of satisfied (<5 min) and nonsatisfied customers (>= 5 mins)
 		int satisfied = 0;
 		int notSatisfied = 0;
@@ -442,10 +442,12 @@ public class MarketSim {
 		// were not recommended to close
 		// open one lane for each "20%" that were unsatisfied, otherwise gives
 		// recommendation of lanes to close
+		int addLaneF = 0;
+		int addLaneS = 0;
 		if ((notSatisfied > (0.2 * custs.size())) && (cFull < 1)) {
-			int addLane = (int) (notSatisfied / (0.2 * custs.size()));
+			addLaneF = (int) (notSatisfied / (0.2 * custs.size()));
 			System.out.println("\n ----- Given the number of unsatisfied customers, I would recommend opening "
-					+ addLane + " more Full Service lanes.");
+					+ addLaneF + " more Full Service lanes.");
 		} else if (cFull > 0) {
 			System.out.println(
 					"\n ----- Given the length of time the Full Service lanes were not in use, I would recommend closing "
@@ -453,14 +455,18 @@ public class MarketSim {
 		}
 
 		if ((notSatisfied > (0.2 * custs.size())) && (cSelf < 1)) {
-			int addLane = (int) (notSatisfied / (0.1 * custs.size()));
+			addLaneS = (int) (notSatisfied / (0.1 * custs.size()));
 			System.out.println("\n ----- Given the number of unsatisfied customers, I would recommend opening "
-					+ addLane + " more Self Service lanes.");
+					+ addLaneS + " more Self Service lanes.");
 		} else if (cSelf > 0) {
 			System.out.println(
 					"\n ----- Given the length of time the Self Service lanes were not in use, I would recommend closing "
 							+ cSelf + " Self Service lanes.");
 		}
+		
+		Integer[] additions = {addLaneF, addLaneS};
+		
+		return additions;
 
 	}
 
