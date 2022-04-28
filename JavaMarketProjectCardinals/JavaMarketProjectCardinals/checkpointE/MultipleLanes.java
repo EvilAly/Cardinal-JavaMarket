@@ -48,8 +48,8 @@ public class MultipleLanes {
 	// create SQL Statement
 	public String toSQLString() {
 		String s;
-		s = "INSERT INTO fullcheckout (runID, numOfLanes, notInUseMins, totalWaitMins, custCount) VALUES " + "(" + runID
-				+ ", " + checkoutLanes.size() + ", " + notInUse + ", " + totalWait + ", " + custCount + ")";
+		s = "INSERT INTO fullcheckout (runID, numOfLanes, notInUseMins, totalWaitMins, custCount, suggestion) VALUES " + "(" + runID
+				+ ", " + checkoutLanes.size() + ", " + notInUse + ", " + totalWait + ", " + custCount;
 		return s;
 	}
 
