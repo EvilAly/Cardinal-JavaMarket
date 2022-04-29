@@ -1,4 +1,4 @@
-DROP DATABASE cardinalmarket;
+DROP DATABASE IF EXISTS cardinalmarket;
 CREATE DATABASE cardinalmarket;
 USE cardinalmarket;
 
